@@ -29,7 +29,9 @@ public:
 
 int main() {
 	int duration = 2;
-	SineOscillator sineOscillator(440, 0.5);
+	SineOscillator AsineOscillator(440, 0.5);
+	SineOscillator CsineOscillator(523.25, 0.5);
+	SineOscillator EsineOscillator(659.25, 0.5);
 	std::ofstream audioFile;
 	std::ofstream audioTest;
 
@@ -38,8 +40,10 @@ int main() {
 
 	auto maxAmplitude = pow(2, bitDepth - 1) - 1;
 	for (int i = 0; i < sampleRate * duration; i++) {
-		auto sample = sineOscillator.process();
-		int intSample = static_cast<int> (sample * maxAmplitude);
+		auto Asample = AsineOscillator.process();
+		auto Csample = CsineOscillator.process();
+		auto Esample = EsineOscillator.process();
+		int intSample = static_cast<int> ((Asample + Csample + Esample) * maxAmplitude / 3);
 		audioFile.write(reinterpret_cast<char*> (&intSample), 2);
 		audioTest << intSample << std::endl;
 	}
